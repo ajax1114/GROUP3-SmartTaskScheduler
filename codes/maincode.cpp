@@ -177,3 +177,50 @@ void editTask() {
     bool found = false;
 >>>>>>> f2bcdea41b943ae97eae944382ae01eb24024269
 >>>>>>> beb5eaeb2f79a6d71585b433ecf92c2d5e91f23d
+
+// Undo last action using Stack
+void undoLast() {
+    if (undoStack.empty()) {
+        cout << "Nothing to undo!\n";
+        return;
+    }
+
+    // Clear current queues
+    while(!priorityQueueTasks.empty()) priorityQueueTasks.pop();
+    while(!normalQueue.empty()) normalQueue.pop();
+
+    // Restore from stack
+    vector<Task> previousState = undoStack.top();
+    undoStack.pop();
+
+    for(auto &t : previousState) {
+        if(t.priority == 1) priorityQueueTasks.push(t);
+        else normalQueue.push(t);
+    }
+
+    cout << "Reverted to previous state!\n";
+}
+
+// Function to view tasks
+void viewTasks() {
+    if (priorityQueueTasks.empty() && normalQueue.empty()) {
+        cout << "\n[!] Your task list is currently empty.\n";
+        return;
+    }
+
+    cout << "\n--- URGENT / HIGH PRIORITY (Priority Queue) ---\n";
+    priority_queue<Task> tempPQ = priorityQueueTasks;
+    while (!tempPQ.empty()) {
+        Task t = tempPQ.top();
+        tempPQ.pop();
+        cout << "[" << t.priority << "] " << t.name << " | Deadline: " << t.deadline << endl;
+    }
+
+    cout << "\n--- NORMAL TASKS (Queue) ---\n";
+    queue<Task> tempQ = normalQueue;
+    while (!tempQ.empty()) {
+        Task t = tempQ.front();
+        tempQ.pop();
+        cout << "[" << t.priority << "] " << t.name << " | Deadline: " << t.deadline << endl;
+    }
+}
