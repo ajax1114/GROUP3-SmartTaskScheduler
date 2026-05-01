@@ -71,14 +71,9 @@ void addTask() {
     }
 
     cout << "Task Added Successfully!\n";
-<<<<<<< HEAD
 }
 
 // Function to delete a task by name
-=======
-
-    // Function to delete a task by name
->>>>>>> f2bcdea41b943ae97eae944382ae01eb24024269
 void deleteTask() {
     if (priorityQueueTasks.empty() && normalQueue.empty()) {
         cout << "Nothing to delete.\n";
@@ -91,7 +86,6 @@ void deleteTask() {
     cin.ignore();
     getline(cin, target);
 
-<<<<<<< HEAD
     bool found = false;
 
     // Search and remove from Priority Queue
@@ -117,6 +111,76 @@ void deleteTask() {
     if (found) cout << "Task '" << target << "' deleted.\n";
     else cout << "Task not found.\n";
 }
-=======
+// Function to edit a task
+void editTask() {
+    if (priorityQueueTasks.empty() && normalQueue.empty()) {
+        cout << "Nothing to edit.\n";
+        return;
+    }
+
+    saveState();
+    string target;
+    cout << "Enter the Task Name you want to edit: ";
+    cin.ignore();
+    getline(cin, target);
+
+    // To edit, we basically find, delete, and re-add
+    // Simplified: we'll search both, update the first match
     bool found = false;
->>>>>>> f2bcdea41b943ae97eae944382ae01eb24024269
+    vector<Task> allTasks;
+
+    // Extract all
+    while(!priorityQueueTasks.empty()){
+        allTasks.push_back(priorityQueueTasks.top());
+        priorityQueueTasks.pop();
+    }
+    while(!normalQueue.empty()){
+        allTasks.push_back(normalQueue.front());
+        normalQueue.pop();
+    }
+
+    for(auto &t : allTasks) {
+        if(t.name == target) {
+            cout << "New name: ";
+            getline(cin, t.name);
+            cout << "New deadline: ";
+            getline(cin, t.deadline);
+            cout << "New priority (1-3): ";
+            cin >> t.priority;
+            found = true;
+            break;
+        }
+    }
+
+    // Re-distribute
+    for(auto &t : allTasks) {
+        if(t.priority == 1) priorityQueueTasks.push(t);
+        else normalQueue.push(t);
+    }
+
+    if(found) cout << "Task updated!\n";
+    else cout << "Task not found.\n";
+}
+
+// Undo last action using Stack
+void undoLast() {
+    if (undoStack.empty()) {
+        cout << "Nothing to undo!\n";
+        return;
+    }
+
+    // Clear current queues
+    while(!priorityQueueTasks.empty()) priorityQueueTasks.pop();
+    while(!normalQueue.empty()) normalQueue.pop();
+
+    // Restore from stack
+    vector<Task> previousState = undoStack.top();
+    undoStack.pop();
+
+    for(auto &t : previousState) {
+        if(t.priority == 1) priorityQueueTasks.push(t);
+        else normalQueue.push(t);
+    }
+
+    cout << "Reverted to previous state!\n";
+}
