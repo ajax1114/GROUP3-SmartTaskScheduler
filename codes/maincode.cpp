@@ -86,13 +86,6 @@ void deleteTask() {
     cin.ignore();
     getline(cin, target);
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> beb5eaeb2f79a6d71585b433ecf92c2d5e91f23d
->>>>>>> 6e2bd80d4cff6aea2fc69a9e7593b9628ea78134
     bool found = false;
 
     // Search and remove from Priority Queue
@@ -118,11 +111,7 @@ void deleteTask() {
     if (found) cout << "Task '" << target << "' deleted.\n";
     else cout << "Task not found.\n";
 }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 
->>>>>>> 6e2bd80d4cff6aea2fc69a9e7593b9628ea78134
 // Function to edit a task
 void editTask() {
     if (priorityQueueTasks.empty() && normalQueue.empty()) {
@@ -138,7 +127,6 @@ void editTask() {
 
     // To edit, we basically find, delete, and re-add
     // Simplified: we'll search both, update the first match
-<<<<<<< HEAD
     bool found = false;
     vector<Task> allTasks;
 
@@ -197,45 +185,66 @@ void undoLast() {
 
     cout << "Reverted to previous state!\n";
 }
-=======
-    bool found = false;
-    vector<Task> allTasks;
 
-    // Extract all
-    while(!priorityQueueTasks.empty()){
-        allTasks.push_back(priorityQueueTasks.top());
-        priorityQueueTasks.pop();
-    }
-    while(!normalQueue.empty()){
-        allTasks.push_back(normalQueue.front());
-        normalQueue.pop();
+// Function to view tasks
+void viewTasks() {
+    if (priorityQueueTasks.empty() && normalQueue.empty()) {
+        cout << "\n[!] Your task list is currently empty.\n";
+        return;
     }
 
-    for(auto &t : allTasks) {
-        if(t.name == target) {
-            cout << "New name: ";
-            getline(cin, t.name);
-            cout << "New deadline: ";
-            getline(cin, t.deadline);
-            cout << "New priority (1-3): ";
-            cin >> t.priority;
-            found = true;
-            break;
-        }
+    cout << "\n--- URGENT / HIGH PRIORITY (Priority Queue) ---\n";
+    priority_queue<Task> tempPQ = priorityQueueTasks;
+    while (!tempPQ.empty()) {
+        Task t = tempPQ.top();
+        tempPQ.pop();
+        cout << "[" << t.priority << "] " << t.name << " | Deadline: " << t.deadline << endl;
     }
 
-    // Re-distribute
-    for(auto &t : allTasks) {
-        if(t.priority == 1) priorityQueueTasks.push(t);
-        else normalQueue.push(t);
+    cout << "\n--- NORMAL TASKS (Queue) ---\n";
+    queue<Task> tempQ = normalQueue;
+    while (!tempQ.empty()) {
+        Task t = tempQ.front();
+        tempQ.pop();
+        cout << "[" << t.priority << "] " << t.name << " | Deadline: " << t.deadline << endl;
     }
-
-    if(found) cout << "Task updated!\n";
-    else cout << "Task not found.\n";
 }
-=======
-=======
-    bool found = false;
->>>>>>> f2bcdea41b943ae97eae944382ae01eb24024269
->>>>>>> beb5eaeb2f79a6d71585b433ecf92c2d5e91f23d
->>>>>>> 6e2bd80d4cff6aea2fc69a9e7593b9628ea78134
+
+// Main Menu
+int main() {
+    int choice;
+
+    do {
+        cout << "\n====================================\n";
+        cout << "   SMART TASK SCHEDULER (GROUP 3)   \n";
+        cout << "====================================\n";
+        cout << "1. Add Task\n";
+        cout << "2. View All Tasks\n";
+        cout << "3. Edit Task\n";
+        cout << "4. Delete Task\n";
+        cout << "5. Undo Last Action\n";
+        cout << "6. Exit\n";
+        cout << "------------------------------------\n";
+        cout << "Enter choice: ";
+        
+        if (!(cin >> choice)) {
+            cout << "Please enter a valid number.\n";
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+
+        switch (choice) {
+            case 1: addTask(); break;
+            case 2: viewTasks(); break;
+            case 3: editTask(); break;
+            case 4: deleteTask(); break;
+            case 5: undoLast(); break;
+            case 6: cout << "System shutting down. Goodbye!\n"; break;
+            default: cout << "Invalid selection!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
