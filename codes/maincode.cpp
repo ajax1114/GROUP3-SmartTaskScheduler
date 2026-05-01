@@ -86,3 +86,78 @@ void deleteTask() {
     getline(cin, target);
 
     bool found = false;
+
+    // Search and remove from Priority Queue
+    priority_queue<Task> tempPQ;
+    while (!priorityQueueTasks.empty()) {
+        Task t = priorityQueueTasks.top();
+        priorityQueueTasks.pop();
+        if (t.name == target) found = true;
+        else tempPQ.push(t);
+    }
+    priorityQueueTasks = tempPQ;
+
+    // Search and remove from Normal Queue
+    queue<Task> tempQ;
+    while (!normalQueue.empty()) {
+        Task t = normalQueue.front();
+        normalQueue.pop();
+        if (t.name == target) found = true;
+        else tempQ.push(t);
+    }
+    normalQueue = tempQ;
+
+    if (found) cout << "Task '" << target << "' deleted.\n";
+    else cout << "Task not found.\n";
+}
+
+// Function to edit a task
+void editTask() {
+    if (priorityQueueTasks.empty() && normalQueue.empty()) {
+        cout << "Nothing to edit.\n";
+        return;
+    }
+
+    saveState();
+    string target;
+    cout << "Enter the Task Name you want to edit: ";
+    cin.ignore();
+    getline(cin, target);
+
+    // To edit, we basically find, delete, and re-add
+    // Simplified: we'll search both, update the first match
+    bool found = false;
+    vector<Task> allTasks;
+
+    // Extract all
+    while(!priorityQueueTasks.empty()){
+        allTasks.push_back(priorityQueueTasks.top());
+        priorityQueueTasks.pop();
+    }
+    while(!normalQueue.empty()){
+        allTasks.push_back(normalQueue.front());
+        normalQueue.pop();
+    }
+
+    for(auto &t : allTasks) {
+        if(t.name == target) {
+            cout << "New name: ";
+            getline(cin, t.name);
+            cout << "New deadline: ";
+            getline(cin, t.deadline);
+            cout << "New priority (1-3): ";
+            cin >> t.priority;
+            found = true;
+            break;
+        }
+    }
+
+    // Re-distribute
+    for(auto &t : allTasks) {
+        if(t.priority == 1) priorityQueueTasks.push(t);
+        else normalQueue.push(t);
+    }
+
+    if(found) cout << "Task updated!\n";
+    else cout << "Task not found.\n";
+}
