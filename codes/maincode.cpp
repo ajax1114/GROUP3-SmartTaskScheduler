@@ -20,3 +20,30 @@ struct Task {
     }
 };
 
+// Global Data Structures
+priority_queue<Task> priorityQueueTasks; // For High Priority
+queue<Task> normalQueue;                // For Medium/Low Priority
+stack<vector<Task>> undoStack;          // Stores system snapshots for Undo
+
+// --- Helper Functions ---
+
+// Captures the current state of both queues for the Undo stack
+void saveState() {
+    vector<Task> state;
+    
+    // Save Priority Queue
+    priority_queue<Task> tempPQ = priorityQueueTasks;
+    while(!tempPQ.empty()) {
+        state.push_back(tempPQ.top());
+        tempPQ.pop();
+    }
+    
+    // Save Normal Queue (using a special marker or size could work, 
+    // but we'll store all as a list and redistribute on undo)
+    queue<Task> tempQ = normalQueue;
+    while(!tempQ.empty()) {
+        state.push_back(tempQ.front());
+        tempQ.pop();
+    }
+    undoStack.push(state);
+}
