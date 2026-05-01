@@ -71,8 +71,14 @@ void addTask() {
     }
 
     cout << "Task Added Successfully!\n";
+<<<<<<< HEAD
+}
+
+// Function to delete a task by name
+=======
 
     // Function to delete a task by name
+>>>>>>> f2bcdea41b943ae97eae944382ae01eb24024269
 void deleteTask() {
     if (priorityQueueTasks.empty() && normalQueue.empty()) {
         cout << "Nothing to delete.\n";
@@ -85,6 +91,10 @@ void deleteTask() {
     cin.ignore();
     getline(cin, target);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> beb5eaeb2f79a6d71585b433ecf92c2d5e91f23d
     bool found = false;
 
     // Search and remove from Priority Queue
@@ -110,6 +120,7 @@ void deleteTask() {
     if (found) cout << "Task '" << target << "' deleted.\n";
     else cout << "Task not found.\n";
 }
+<<<<<<< HEAD
 
 // Function to edit a task
 void editTask() {
@@ -161,3 +172,8 @@ void editTask() {
     if(found) cout << "Task updated!\n";
     else cout << "Task not found.\n";
 }
+=======
+=======
+    bool found = false;
+>>>>>>> f2bcdea41b943ae97eae944382ae01eb24024269
+>>>>>>> beb5eaeb2f79a6d71585b433ecf92c2d5e91f23d
