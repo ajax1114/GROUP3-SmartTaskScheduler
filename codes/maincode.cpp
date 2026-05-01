@@ -86,6 +86,13 @@ void deleteTask() {
     cin.ignore();
     getline(cin, target);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> beb5eaeb2f79a6d71585b433ecf92c2d5e91f23d
+>>>>>>> 6e2bd80d4cff6aea2fc69a9e7593b9628ea78134
     bool found = false;
 
     // Search and remove from Priority Queue
@@ -111,6 +118,11 @@ void deleteTask() {
     if (found) cout << "Task '" << target << "' deleted.\n";
     else cout << "Task not found.\n";
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+>>>>>>> 6e2bd80d4cff6aea2fc69a9e7593b9628ea78134
 // Function to edit a task
 void editTask() {
     if (priorityQueueTasks.empty() && normalQueue.empty()) {
@@ -126,6 +138,7 @@ void editTask() {
 
     // To edit, we basically find, delete, and re-add
     // Simplified: we'll search both, update the first match
+<<<<<<< HEAD
     bool found = false;
     vector<Task> allTasks;
 
@@ -184,3 +197,45 @@ void undoLast() {
 
     cout << "Reverted to previous state!\n";
 }
+=======
+    bool found = false;
+    vector<Task> allTasks;
+
+    // Extract all
+    while(!priorityQueueTasks.empty()){
+        allTasks.push_back(priorityQueueTasks.top());
+        priorityQueueTasks.pop();
+    }
+    while(!normalQueue.empty()){
+        allTasks.push_back(normalQueue.front());
+        normalQueue.pop();
+    }
+
+    for(auto &t : allTasks) {
+        if(t.name == target) {
+            cout << "New name: ";
+            getline(cin, t.name);
+            cout << "New deadline: ";
+            getline(cin, t.deadline);
+            cout << "New priority (1-3): ";
+            cin >> t.priority;
+            found = true;
+            break;
+        }
+    }
+
+    // Re-distribute
+    for(auto &t : allTasks) {
+        if(t.priority == 1) priorityQueueTasks.push(t);
+        else normalQueue.push(t);
+    }
+
+    if(found) cout << "Task updated!\n";
+    else cout << "Task not found.\n";
+}
+=======
+=======
+    bool found = false;
+>>>>>>> f2bcdea41b943ae97eae944382ae01eb24024269
+>>>>>>> beb5eaeb2f79a6d71585b433ecf92c2d5e91f23d
+>>>>>>> 6e2bd80d4cff6aea2fc69a9e7593b9628ea78134
