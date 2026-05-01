@@ -46,6 +46,7 @@ void saveState() {
         tempQ.pop();
     }
     undoStack.push(state);
+<<<<<<< HEAD
 }
 
 // Function to add task
@@ -71,4 +72,6 @@ void addTask() {
     }
 
     cout << "Task Added Successfully!\n";
+=======
+>>>>>>> 0a4ab1144058ceb704c14b60c94235ede99a2386
 }
