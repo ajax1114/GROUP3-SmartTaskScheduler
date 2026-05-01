@@ -46,7 +46,6 @@ void saveState() {
         tempQ.pop();
     }
     undoStack.push(state);
-<<<<<<< HEAD
 }
 
 // Function to add task
@@ -72,6 +71,43 @@ void addTask() {
     }
 
     cout << "Task Added Successfully!\n";
-=======
->>>>>>> 0a4ab1144058ceb704c14b60c94235ede99a2386
+}
+
+// Function to delete a task by name
+void deleteTask() {
+    if (priorityQueueTasks.empty() && normalQueue.empty()) {
+        cout << "Nothing to delete.\n";
+        return;
+    }
+
+    saveState();
+    string target;
+    cout << "Enter the exact Task Name to delete: ";
+    cin.ignore();
+    getline(cin, target);
+
+    bool found = false;
+
+    // Search and remove from Priority Queue
+    priority_queue<Task> tempPQ;
+    while (!priorityQueueTasks.empty()) {
+        Task t = priorityQueueTasks.top();
+        priorityQueueTasks.pop();
+        if (t.name == target) found = true;
+        else tempPQ.push(t);
+    }
+    priorityQueueTasks = tempPQ;
+
+    // Search and remove from Normal Queue
+    queue<Task> tempQ;
+    while (!normalQueue.empty()) {
+        Task t = normalQueue.front();
+        normalQueue.pop();
+        if (t.name == target) found = true;
+        else tempQ.push(t);
+    }
+    normalQueue = tempQ;
+
+    if (found) cout << "Task '" << target << "' deleted.\n";
+    else cout << "Task not found.\n";
 }
